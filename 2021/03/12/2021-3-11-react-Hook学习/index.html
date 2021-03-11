@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>2021.3.11-react Hook学习 | johnnie</title><meta name="author" content="Johnnie"><meta name="copyright" content="Johnnie"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="1.  react中的副作用 纯函数（Pure function）：给一个 function 相同的参数，永远会返回相同的值，并且没有副作用；这个概念拿到 React 中，就是给一个 Pure component 相同的 props, 永远渲染出相同的视图，并且没有其他的副作用；纯组件的好处是，容易监测数据变化、容易测试、提高渲染性能等； 副作用（Side Effect） 是指一个 functio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2021.3.11-react Hook学习">
+<meta property="og:url" content="http://example.com/2021/03/12/2021-3-11-react-Hook%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="johnnie">
+<meta property="og:description" content="1.  react中的副作用 纯函数（Pure function）：给一个 function 相同的参数，永远会返回相同的值，并且没有副作用；这个概念拿到 React 中，就是给一个 Pure component 相同的 props, 永远渲染出相同的视图，并且没有其他的副作用；纯组件的好处是，容易监测数据变化、容易测试、提高渲染性能等； 副作用（Side Effect） 是指一个 functio">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3432019420,1124561838&fm=26&gp=0.jpg">
+<meta property="article:published_time" content="2021-03-11T16:58:33.000Z">
+<meta property="article:modified_time" content="2021-03-11T16:59:04.807Z">
+<meta property="article:author" content="Johnnie">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3432019420,1124561838&fm=26&gp=0.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2021/03/12/2021-3-11-react-Hook%E5%AD%A6%E4%B9%A0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-12 00:59:04'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/iconfont.css"><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">36</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3432019420,1124561838&amp;fm=26&amp;gp=0.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">johnnie</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">2021.3.11-react Hook学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-03-11T16:58:33.000Z" title="Created 2021-03-12 00:58:33">2021-03-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-11T16:59:04.807Z" title="Updated 2021-03-12 00:59:04">2021-03-12</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h4 id="1-react中的副作用"><a href="#1-react中的副作用" class="headerlink" title="1.  react中的副作用"></a>1.  react中的副作用</h4><ol>
+<li><strong>纯函数（Pure function）</strong>：给一个 function 相同的参数，永远会返回相同的值，并且没有副作用；这个概念拿到 React 中，就是给一个 Pure component 相同的 props, 永远渲染出相同的视图，并且没有其他的副作用；纯组件的好处是，容易监测数据变化、容易测试、提高渲染性能等；</li>
+<li><strong>副作用（Side Effect）</strong> 是指一个 function 做了和本身运算返回值无关的事，比如：修改了全局变量、修改了传入的参数、甚至是 console.log()，所以 ajax 操作，修改 dom 都是算作副作用的</li>
+</ol>
+<h4 id="2-Effect-Hook"><a href="#2-Effect-Hook" class="headerlink" title="2.  Effect Hook"></a>2.  Effect Hook</h4><p><strong>1. 无需清除的effect hook</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123;useState, useEffect&#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> EffectHookDome: React.FC = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> [num, setNum] = useState(<span class="number">0</span>)</span><br><span class="line">    useEffect(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">document</span>.title = <span class="string">`demo是否改变<span class="subst">$&#123;num&#125;</span>???`</span></span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;button onClick=&#123;<span class="function">() =&gt;</span> &#123;setNum(num + <span class="number">1</span>)&#125;&#125;&gt;点击&lt;/button&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> EffectHookDome;</span><br></pre></td></tr></table></figure>
+<p>注意点: </p>
+<ul>
+<li>   useEffect会在组件第一次渲染 和 每次渲染完成后, 执行传入的函数, 相当于生命周期componentDidMount \ componentDidUpdate \ componentWillUnmount (这个生命周期后面说明)</li>
+<li>   Hook使用js的闭包机制 &lt;啥机制, 后面补充&gt;, 所以在useEffect里面可以只用使用变量 , 就如同使用解构赋值的变量一样</li>
+</ul>
+<p><strong>2. 需清除的effect hook</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import &#123; SSL_OP_SSLEAY_080_CLIENT_DH_BUG &#125; from &#39;node:constants&#39;;</span><br><span class="line">import React, &#123;useState, useEffect&#125; from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">const UseEffectDomeUp: React.FC &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line"></span><br><span class="line">    const [postions, setPostions] &#x3D; useState(&#123;x: 0, y: 0&#125;)</span><br><span class="line"></span><br><span class="line">    useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">        const changeMouse &#x3D; (e: MouseEvent) &#x3D;&gt; &#123;</span><br><span class="line">            console.log(&#39;change&#39;)</span><br><span class="line">            setPostions(&#123;</span><br><span class="line">                x: e.clientX,</span><br><span class="line">                y: e.clientY</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F; 绑定时间到页面</span><br><span class="line">        document.addEventListener(&#39;click&#39;, changeMouse)</span><br><span class="line">        return () &#x3D;&gt; &#123;</span><br><span class="line">            &#x2F;&#x2F; 每次调用前, 会先清除</span><br><span class="line">            console.log(&#39;clear&#39;)</span><br><span class="line">            document.removeEventListener(&#39;click&#39;, changeMouse)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    return (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            鼠标的位置: x: &#123;postions.x&#125; , y :&#123;postions.y&#125;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default UseEffectDomeUp;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>3.  通过跳过 Effect 进行性能优化</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">        console.log(&#39;add&#39;)</span><br><span class="line">        const changeMouse &#x3D; (e: MouseEvent) &#x3D;&gt; &#123;</span><br><span class="line">            console.log(&#39;change&#39;)</span><br><span class="line">            setPostions(&#123;</span><br><span class="line">                x: e.clientX,</span><br><span class="line">                y: e.clientY</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F; 绑定时间到页面</span><br><span class="line">        document.addEventListener(&#39;click&#39;, changeMouse)</span><br><span class="line">        return () &#x3D;&gt; &#123;</span><br><span class="line">            &#x2F;&#x2F; 每次调用前, 会先清除</span><br><span class="line">            console.log(&#39;clear&#39;)</span><br><span class="line">            document.removeEventListener(&#39;click&#39;, changeMouse)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,[])</span><br></pre></td></tr></table></figure>
+
+<pre><code>1. 如果只想在初始化和清除时, 调用useEffect , 那么就给useEffect的第二个参数传一个空数组 []
+
+2. 如果想要依赖某个值, 或者某几个值 的改变就调用useEffect, 那么把这些值都写在数组里</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 此时useEffect依赖这两个的改变, 才会调用</span><br><span class="line">useEffect(callback, [ num , like])</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>4.  Hook 使用规则</strong></p>
+<ol>
+<li><p>只在最顶层使用hook (不要在循环 或 条件判断 或 函数中使用)</p>
+<p> 原因 : 因为react是按照调用顺序对应 hook状态的 , 如果不写在顶层, 就可能会改变顺序, 或则hook数量, 从而产生bug</p>
+<ol start="2">
+<li>只能在react的函数组件中调用hook</li>
+</ol>
+</li>
+</ol>
+<p><strong>5.  自定义Hook</strong><br>作用 : 将组件逻辑提取到可重用得函数</p>
+<ol>
+<li>必须以<code>use</code>开头</li>
+<li>使用共同的自定义Hook的组件, 之间的state不用共享</li>
+<li>为什么会获取独立的state, 因为对于组件来说 , 是调用了hook, 对于react来说 ,只是调用了 useState 和 useEffect , 或则是其他的 , 所以每个组件中的state是独立的</li>
+</ol>
+<p><strong>6.  HOC</strong></p>
+<p>……</p>
+<p><strong>7.  useRef Hook</strong></p>
+<ol>
+<li><p>state遇到的难题</p>
+<p> 在一个组件中 , 当一个值改变后, 组件会被重新渲染 , 每一次渲染就相当于调用一次函数组件 , 所以这就意味着 =&gt; 每次渲染后 , 组件中的props和state都是相对于其他次渲染独立的 .</p>
+</li>
+</ol>
+<pre><code>问题 : 当我们在第二次渲染后 , 异步使用了A值 , 然后在第二次渲染 ,..., 第八次渲染后 , A值改变了 , 但是通过闭包传递出去的A值, 并没有改变.</code></pre>
+<ol start="2">
+<li>多次渲染中的纽带 </li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">function TextInputWithFocusButton() &#123;</span><br><span class="line">  const inputEl &#x3D; useRef(null);</span><br><span class="line">  const onButtonClick &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    &#x2F;&#x2F; &#96;current&#96; 指向已挂载到 DOM 上的文本输入元素</span><br><span class="line">    inputEl.current.focus();</span><br><span class="line">  &#125;;</span><br><span class="line">  return (</span><br><span class="line">    &lt;&gt;</span><br><span class="line">      &lt;input ref&#x3D;&#123;inputEl&#125; type&#x3D;&quot;text&quot; &#x2F;&gt;</span><br><span class="line">      &lt;button onClick&#x3D;&#123;onButtonClick&#125;&gt;Focus the input&lt;&#x2F;button&gt;</span><br><span class="line">    &lt;&#x2F;&gt;</span><br><span class="line">  );&#125;</span><br></pre></td></tr></table></figure>
+
+<p>useRef 完美解决了上述的问题 ,<br>注意点 :</p>
+<pre><code>1. 当ref对象内容发生变化时, useRef并不会通知我们
+2. 变更 XXX.current属性不会引发组件重新渲染 
+3. 当组件重新渲染后 , useRef返回的对象是不会变的</code></pre>
+<p><strong>8.  useContext</strong></p>
+<p>复习昨天学的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#x2F;&#x2F; 创建context</span><br><span class="line">const MyContext &#x3D; React.createContext(&lt;defaultValue&gt;)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 父组件中 , 值通过value传递</span><br><span class="line">&lt;MyContext.Provider value&#x3D;&#123;this.state&#125;&gt;</span><br><span class="line">    &lt;Button type&#x3D;&quot;primary&quot;&gt;Primary Button&lt;&#x2F;Button&gt;</span><br><span class="line">    &lt;TestCom &#x2F;&gt;</span><br><span class="line">&lt;&#x2F;MyContext.Provider&gt;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 子组件 , 获取值 得写成一个表达式</span><br><span class="line">&lt;MyContext.Consumer&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        value &#x3D;&gt; &#123;</span><br><span class="line">           return  &lt;div&gt;&#123;value&#125;&lt;&#x2F;div&gt;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;&#x2F;MyContext.Consumer&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p>今天使用useContext, 改写 :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 子组件</span><br><span class="line">&#x2F;&#x2F; 只需要通过useContext这个hook, 就可以直接拿到传入的值</span><br><span class="line">const TestCom &#x3D; (props) &#x3D;&gt; &#123;</span><br><span class="line"></span><br><span class="line">    const test &#x3D; useContext(MyContext)</span><br><span class="line">    console.log(test)</span><br><span class="line">    return (</span><br><span class="line">        &lt;div&gt;&#123;test.name&#125;&lt;&#x2F;div&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>总结 : 不管是createContext 还是后面优化的 useContext, 都是为了解决props传参太麻烦的问题.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Johnnie</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2021/03/12/2021-3-11-react-Hook%E5%AD%A6%E4%B9%A0/">http://example.com/2021/03/12/2021-3-11-react-Hook%E5%AD%A6%E4%B9%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3432019420,1124561838&amp;fm=26&amp;gp=0.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/03/11/2021-3-10-react%E7%9F%A5%E8%AF%86%E7%82%B9%E5%AD%A6%E4%B9%A0/"><img class="next-cover" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3432019420,1124561838&amp;fm=26&amp;gp=0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">2021.3.10-react知识点学习</div></div></a></div></nav></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Johnnie</div><div class="author-info__description">只是一个前端打字员</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">36</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/wanghan0921"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/wanghan0921" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:johnnie_wh@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.jianshu.com/u/e79226c5d39a" target="_blank" title=""><i class="iconfont  icon-jianshu"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-react%E4%B8%AD%E7%9A%84%E5%89%AF%E4%BD%9C%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">1.  react中的副作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Effect-Hook"><span class="toc-number">2.</span> <span class="toc-text">2.  Effect Hook</span></a></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/03/12/2021-3-11-react-Hook%E5%AD%A6%E4%B9%A0/" title="2021.3.11-react Hook学习"><img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3432019420,1124561838&amp;fm=26&amp;gp=0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="2021.3.11-react Hook学习"/></a><div class="content"><a class="title" href="/2021/03/12/2021-3-11-react-Hook%E5%AD%A6%E4%B9%A0/" title="2021.3.11-react Hook学习">2021.3.11-react Hook学习</a><time datetime="2021-03-11T16:58:33.000Z" title="Created 2021-03-12 00:58:33">2021-03-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/11/2021-3-10-react%E7%9F%A5%E8%AF%86%E7%82%B9%E5%AD%A6%E4%B9%A0/" title="2021.3.10-react知识点学习"><img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3432019420,1124561838&amp;fm=26&amp;gp=0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="2021.3.10-react知识点学习"/></a><div class="content"><a class="title" href="/2021/03/11/2021-3-10-react%E7%9F%A5%E8%AF%86%E7%82%B9%E5%AD%A6%E4%B9%A0/" title="2021.3.10-react知识点学习">2021.3.10-react知识点学习</a><time datetime="2021-03-10T16:58:26.000Z" title="Created 2021-03-11 00:58:26">2021-03-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/10/typescript%E5%A4%8D%E4%B9%A0/" title="typescript复习"><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2903190931,4186384969&amp;fm=26&amp;gp=0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="typescript复习"/></a><div class="content"><a class="title" href="/2021/03/10/typescript%E5%A4%8D%E4%B9%A0/" title="typescript复习">typescript复习</a><time datetime="2021-03-10T14:25:32.000Z" title="Created 2021-03-10 22:25:32">2021-03-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/09/%E6%9C%9B%E4%B8%80%E5%88%87%E9%A1%BA%E5%88%A9/" title="2021望一切顺利"><img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fq_mini%2Cc_zoom%2Cw_640%2Fimages%2F20170707%2F8dd9438cf4334371bbbeebf21ccfc68b.jpg&amp;refer=http%3A%2F%2F5b0988e595225.cdn.sohucs.com&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=jpeg?sec=1617890395&amp;t=16773a2f7f04aa9a35a3d812523db3b4" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="2021望一切顺利"/></a><div class="content"><a class="title" href="/2021/03/09/%E6%9C%9B%E4%B8%80%E5%88%87%E9%A1%BA%E5%88%A9/" title="2021望一切顺利">2021望一切顺利</a><time datetime="2021-03-09T14:01:09.000Z" title="Created 2021-03-09 22:01:09">2021-03-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/02/03/git%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/" title="git踩坑记录"><img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=318956183,2090649172&amp;fm=26&amp;gp=0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="git踩坑记录"/></a><div class="content"><a class="title" href="/2021/02/03/git%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/" title="git踩坑记录">git踩坑记录</a><time datetime="2021-02-03T15:10:13.000Z" title="Created 2021-02-03 23:10:13">2021-02-03</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Johnnie</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
